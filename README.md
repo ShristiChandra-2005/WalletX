@@ -1,3 +1,7 @@
+🎥 Live Demo
+
+[WalletX Demo] : https://drive.google.com/file/d/1QoeSPBI-7Q4XIx21mRteuFtosXprQjI5/view?usp=drivesdk
+
 💳 WalletX –Secure Digital Wallet
 WalletX is a secure, full-stack digital wallet system that allows users to manage virtual money through deposits, withdrawals, transfers, and real-time fraud detection features. Built using Node.js, Express.js, MongoDB, and modern security practices, it includes three distinct panels: General (public view), User Panel, and Admin Panel. The application is server-connected and fully functional.
 
