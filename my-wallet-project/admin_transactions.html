@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>All Transactions | WalletX Admin</title>
+  <link rel="stylesheet" href="Style.css/admin_Tran.css">
+  <link rel="stylesheet" href="Style.css/admin.css">
+</head>
+<body>
+  <nav class="sidebar">
+    <div class="logo">💳 WalletX Admin</div>
+    <ul>
+      <li><a href="admin_dashboard.html">Dashboard</a></li>
+      <li><a href="admin_Users.html">Users</a></li>
+      <li class="active"><a href="admin_transactions.html">Transactions</a></li>
+      <li><a href="admin_flagged.html">Flagged Activity</a></li>
+      <li><a href="admin_reports.html">Reports</a></li>
+      <li><a href="login.html">Admin Logout</a></li>
+      <li class="bonus"><a href="admin_fraudScan.html">Fraud Scan (Bonus)</a></li>
+      <li class="bonus"><a href="admin_softdelete.html">Soft Delete (Bonus)</a></li>
+      <li class="bonus"><a href="admin_alert.html">Alerts (Bonus)</a></li>
+    </ul>
+  </nav>
+  <div class="main-content">
+    <h2>All Transactions</h2>
+    <div class="filter-bar">
+      <input type="text" id="filterUser" placeholder="User Email or ID">
+      <select id="filterType">
+        <option value="">All Types</option>
+        <option value="deposit">Deposit</option>
+        <option value="withdraw">Withdraw</option>
+        <option value="transfer-in">Transfer In</option>
+        <option value="transfer-out">Transfer Out</option>
+      </select>
+      <select id="filterFlagged">
+        <option value="">All Status</option>
+        <option value="true">Flagged</option>
+        <option value="false">OK</option>
+      </select>
+      <input type="date" id="filterStart">
+      <input type="date" id="filterEnd">
+      <button onclick="loadTransactions()">Filter</button>
+    </div>
+    <div id="loadingSpinner" class="spinner" style="display:none;"></div>
+    <table>
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Type</th>
+          <th>Amount</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>To/From</th>
+        </tr>
+      </thead>
+      <tbody id="txnTable"></tbody>
+    </table>
+  </div>
+  <!-- Transaction Details Modal -->
+  <div id="transactionModal">
+    <span class="close-btn" onclick="closeModal()">✖</span>
+    <div id="modalContent"></div>
+  </div>
+  <script>
+    function getToken() {
+      return localStorage.getItem('token');
+    }
+    async function loadTransactions() {
+      document.getElementById('loadingSpinner').style.display = 'block';
+      const params = [];
+      const user = document.getElementById('filterUser').value;
+      const type = document.getElementById('filterType').value;
+      const flagged = document.getElementById('filterFlagged').value;
+      const startDate = document.getElementById('filterStart').value;
+      const endDate = document.getElementById('filterEnd').value;
+      if (user) params.push(`user=${encodeURIComponent(user)}`);
+      if (type) params.push(`type=${type}`);
+      if (flagged) params.push(`flagged=${flagged}`);
+      if (startDate) params.push(`startDate=${startDate}`);
+      if (endDate) params.push(`endDate=${endDate}`);
+      const query = params.length ? '?' + params.join('&') : '';
+      const res = await fetch(`http://localhost:4000/api/admin/transactions${query}`, {
+        headers: { 'Authorization': 'Bearer ' + getToken() }
+      });
+      const data = await res.json();
+      const table = document.getElementById('txnTable');
+      table.innerHTML = '';
+      if (Array.isArray(data) && data.length > 0) {
+        data.forEach(tx => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${tx.user?.email || '-'}</td>
+            <td>${tx.type}</td>
+            <td>₹${tx.amount}</td>
+            <td>${new Date(tx.createdAt).toLocaleString()}</td>
+            <td>${tx.flagged ? '<span class="flagged" title="Flagged for review">⚠️ Flagged</span>' : '✔️ OK'}</td>
+            <td>
+              ${tx.to?.email ? 'To: ' + tx.to.email : ''}
+              ${tx.from?.email ? 'From: ' + tx.from.email : ''}
+            </td>
+          `;
+          row.onclick = () => showTransactionModal(tx);
+          table.appendChild(row);
+        });
+      } else {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td colspan="6" style="text-align:center;">No transactions found.</td>`;
+        table.appendChild(row);
+      }
+      document.getElementById('loadingSpinner').style.display = 'none';
+    }
+    // Modal logic
+    function showTransactionModal(tx) {
+      document.getElementById('modalContent').innerHTML = `
+        <h3>Transaction Details</h3>
+        <p><strong>User:</strong> ${tx.user?.email || '-'}</p>
+        <p><strong>Type:</strong> ${tx.type}</p>
+        <p><strong>Amount:</strong> ₹${tx.amount}</p>
+        <p><strong>Date:</strong> ${new Date(tx.createdAt).toLocaleString()}</p>
+        <p><strong>Status:</strong> ${tx.flagged ? '<span style="color:#FF4500;">⚠️ Flagged</span>' : '✔️ OK'}</p>
+        <p><strong>Sender:</strong> ${tx.from?.email || '-'}</p>
+        <p><strong>Recipient:</strong> ${tx.to?.email || '-'}</p>
+        <p><strong>Balance Before:</strong> ₹${tx.balanceBefore ?? '-'}</p>
+        <p><strong>Balance After:</strong> ₹${tx.balanceAfter ?? '-'}</p>
+        ${tx.flagged ? `<button onclick="markReviewed('${tx._id}')">Mark as Reviewed</button>` : ''}
+      `;
+      document.getElementById('transactionModal').style.display = 'block';
+    }
+    function closeModal() {
+      document.getElementById('transactionModal').style.display = 'none';
+    }
+    // Mark as reviewed (optional PATCH endpoint)
+    async function markReviewed(id) {
+      const res = await fetch(`http://localhost:4000/api/admin/transactions/${id}/review`, {
+        method: 'PATCH',
+        headers: { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json' }
+      });
+      if (res.ok) {
+        alert('Transaction marked as reviewed!');
+        closeModal();
+        loadTransactions();
+      } else {
+        alert('Failed to mark as reviewed.');
+      }
+    }
+    // Load all on page load
+    window.onload = loadTransactions;
+  </script>
+</body>
+</html>

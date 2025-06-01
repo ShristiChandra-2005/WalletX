@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Dashboard | WalletX</title>
+  <link rel="stylesheet" href="Style.css/UserPanels.css">
+</head>
+<body>
+  <script>
+    if (!localStorage.getItem('token')) {
+      window.location.href = "login.html";
+    }
+  </script>
+  <!-- Collapsible Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <button class="sidebar-toggle" id="sidebarToggle" title="Toggle Menu">☰</button>
+    <a href="userPanel.html" class="active"><span>🏠</span> Dashboard</a>
+    <a href="deposit.html"><span>💰</span> Deposit</a>
+    <a href="withdraw.html"><span>💸</span> Withdraw</a>
+    <a href="transfer.html"><span>🔄</span> Transfer</a>
+    <a href="Transactions.html"><span>📄</span> Transactions</a>
+    <a href="#" onclick="logout()"><span>🚪</span> Logout</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Header -->
+    <nav class="dashboard-header">
+      <span id="userEmail"></span>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </nav>
+    <!-- Balance Card -->
+    <!-- <div class="balance-card">
+      <h2>Current Balance</h2>
+      <div id="currentBalance">₹0</div>
+    </div> -->
+    <!-- Action Cards -->
+    <div class="action-cards">
+      <div class="card-action">
+        <div class="icon">💰</div>
+        <div class="action-title">Deposit</div>
+        <p>Add money to your wallet instantly.</p>
+        <a href="deposit.html" class="card-btn">Go to Deposit</a>
+      </div>
+      <div class="card-action">
+        <div class="icon">💸</div>
+        <div class="action-title">Withdraw</div>
+        <p>Withdraw money securely to your bank.</p>
+        <a href="withdraw.html" class="card-btn">Go to Withdraw</a>
+      </div>
+      <div class="card-action">
+        <div class="icon">🔄</div>
+        <div class="action-title">Transfer</div>
+        <p>Send funds to another WalletX user.</p>
+        <a href="transfer.html" class="card-btn">Go to Transfer</a>
+      </div>
+    </div>
+    <!-- Transactions -->
+    <section class="transactions-section">
+      <h3 style="text-align: center;">Recent Transactions</h3><br>
+      <ul id="recentTransactions">
+        <!-- Recent transactions will be loaded here -->
+      </ul>
+      <div style="text-align:center; margin-top:20px;">
+        <a href="history.html" class="action-btn secondary">View Full History</a>
+      </div>
+    </section>
+  </div>
+  <script>
+    function logout() {
+      localStorage.removeItem('token');
+      window.location.href = "login.html";
+    }
+
+    async function loadBalance() {
+      const res = await fetch('http://localhost:4000/api/wallet/balance', {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        document.getElementById('currentBalance').textContent = `₹${data.balance}`;
+      } else {
+        document.getElementById('currentBalance').textContent = "₹0";
+      }
+    }
+
+    async function loadRecentTransactions() {
+      const res = await fetch('http://localhost:4000/api/wallet/history', {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+      });
+      const data = await res.json();
+      const list = document.getElementById('recentTransactions');
+      list.innerHTML = '';
+      if (Array.isArray(data) && data.length > 0) {
+        data.slice(0, 5).forEach(tx => {
+          const li = document.createElement('li');
+          li.innerHTML = `
+            <b>${tx.type}</b> - ₹${tx.amount} 
+            <span style="color:#888;">(${new Date(tx.createdAt).toLocaleString()})</span>
+            ${tx.flagged ? '<span style="color:#FF4500;"> ⚠️ Flagged</span>' : ''}
+          `;
+          list.appendChild(li);
+        });
+      } else {
+        const li = document.createElement('li');
+        li.className = "empty";
+        li.textContent = "No recent transactions yet. Start by making a deposit!";
+        list.appendChild(li);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const sidebar = document.getElementById('sidebar');
+      const toggle = document.getElementById('sidebarToggle');
+      toggle.onclick = function() {
+        sidebar.classList.toggle('collapsed');
+      };
+      document.getElementById('userEmail').textContent = localStorage.getItem('userEmail') || '';
+      loadBalance();
+      loadRecentTransactions();
+    });
+  </script>
+</body>
+</html>

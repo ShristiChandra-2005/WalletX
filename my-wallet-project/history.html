@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Transaction History | WalletX</title>
+  <link rel="stylesheet" href="Style.css/history.css">
+  <link rel="stylesheet" href="Style.css/UserPanels.css">
+</head>
+<body>
+  <script>
+    if (!localStorage.getItem('token')) {
+      window.location.href = "login.html";
+    }
+  </script>
+  <div class="sidebar">
+    <a href="userPanel.html"><span>🏠</span> Dashboard</a>
+    <a href="deposit.html"><span>💰</span> Deposit</a>
+    <a href="withdraw.html"><span>💸</span> Withdraw</a>
+    <a href="transfer.html"><span>🔄</span> Transfer</a>
+    <a href="Transactions.html" class="active"><span>📄</span> Transactions</a>
+    <a href="#" onclick="logout()"><span>🚪</span> Logout</a>
+  </div>
+  <div class="main-content">
+    <nav class="dashboard-header">
+      <span id="userEmail"></span>
+      <button onclick="logout()">Logout</button>
+    </nav>
+    <main class="main">
+      <h2 class="history-title">Full Transaction History</h2>
+      <div class="history-card">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="historyTable"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+  <footer>
+    <a href="#">Contact</a> | 
+    <a href="#">Terms</a> | 
+    <a href="#">Privacy</a>
+  </footer>
+  <script>
+    function logout() {
+      localStorage.removeItem('token');
+      window.location.href = "login.html";
+    }
+    window.onload = async function() {
+      const token = localStorage.getItem('token');
+      document.getElementById('userEmail').textContent = localStorage.getItem('userEmail') || "";
+      const res = await fetch('http://localhost:4000/api/wallet/history', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      const data = await res.json();
+      const table = document.getElementById('historyTable');
+      table.innerHTML = '';
+      if (Array.isArray(data) && data.length > 0) {
+        data.forEach(tx => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${tx.type}</td>
+            <td>₹${tx.amount}</td>
+            <td>${new Date(tx.createdAt).toLocaleString()}</td>
+            <td>
+              ${tx.flagged ? '<span class="flagged-status">⚠️ Flagged</span>' : '<span class="ok-status">✔️ OK</span>'}
+            </td>
+          `;
+          table.appendChild(tr);
+        });
+      } else {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td colspan="4" style="text-align:center;">No transactions found.</td>`;
+        table.appendChild(tr);
+      }
+    }
+  </script>
+</body>
+</html>

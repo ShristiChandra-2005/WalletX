@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Soft Delete | WalletX Admin</title>
+  <link rel="stylesheet" href="Style.css/admin.css">
+  <link rel="stylesheet" href="Style.css/admin_softdelete.css">
+</head>
+<body>
+  <nav class="sidebar">
+    <div class="logo">💳 WalletX Admin</div>
+    <ul>
+      <li class="active"><a href="admin_dashboard.html">Dashboard</a></li>
+      <li><a href="admin_Users.html">Users</a></li>
+      <li><a href="admin_transactions.html">Transactions</a></li>
+      <li><a href="admin_flagged.html">Flagged Activity</a></li>
+      <li><a href="admin_reports.html">Reports</a></li>
+      <li><a href="login.html">Admin Logout</a></li>
+      <!-- BONUS: Add-ons for extra points -->
+      <li class="bonus"><a href="admin_fraudScan.html">Fraud Scan (Bonus)</a></li>
+      <li class="bonus"><a href="admin_softdelete.html">Soft Delete (Bonus)</a></li>
+      <li class="bonus"><a href="admin_alert.html">Alerts (Bonus)</a></li>
+    </ul>
+  </nav>
+  
+  <main class="admin-main">
+    <section>
+      <h1>Soft Deleted Users</h1>
+      <div class="softdelete-table-container">
+        <table id="softDeleteTable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Deleted At</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="4" style="text-align:center;">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script>
+    async function loadSoftDeletedUsers() {
+      const token = localStorage.getItem('token');
+      const res = await fetch('http://localhost:4000/api/admin/users?deleted=true', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      const data = await res.json();
+      const tbody = document.querySelector('#softDeleteTable tbody');
+      if (Array.isArray(data) && data.length > 0) {
+        tbody.innerHTML = '';
+        data.forEach(user => {
+          tbody.innerHTML += `
+            <tr>
+              <td>${user.name || '-'}</td>
+              <td>${user.email || '-'}</td>
+              <td>${user.deletedAt ? new Date(user.deletedAt).toLocaleString() : '-'}</td>
+              <td>
+                <button class="restore-btn" onclick="restoreUser('${user._id}')">Restore</button>
+                <button class="delete-btn" onclick="permanentDeleteUser('${user._id}')">Delete Permanently</button>
+              </td>
+            </tr>
+          `;
+        });
+      } else {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">No soft deleted users.</td></tr>';
+      }
+    }
+
+    async function restoreUser(userId) {
+      const token = localStorage.getItem('token');
+      await fetch(`http://localhost:4000/api/admin/users/${userId}/restore`, {
+        method: 'PATCH',
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      loadSoftDeletedUsers();
+    }
+
+    async function permanentDeleteUser(userId) {
+      if (!confirm('Are you sure you want to permanently delete this user? This cannot be undone.')) return;
+      const token = localStorage.getItem('token');
+      await fetch(`http://localhost:4000/api/admin/users/${userId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      loadSoftDeletedUsers();
+    }
+
+    window.onload = loadSoftDeletedUsers;
+  </script>
+</body>
+</html>

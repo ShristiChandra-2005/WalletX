@@ -1,0 +1,49 @@
+.fraudscan-card {
+  background: #222;
+  border-radius: 14px;
+  box-shadow: 0 4px 24px #FFD70022;
+  padding: 30px 24px 20px 24px;
+  margin-bottom: 32px;
+  color: #FFD700;
+  font-size: 1.09em;
+}
+.fraudscan-card div {
+  margin-bottom: 10px;
+}
+.fraudscan-card button {
+  background: #FFD700;
+  color: #181818;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-weight: bold;
+  font-size: 1.1em;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px #FFD70022;
+}
+.fraudscan-card button:hover {
+  background: #181818;
+  color: #FFD700;
+  border: 1.5px solid #FFD700;
+  box-shadow: 0 4px 18px #FFD70044;
+}
+.fraudscan-results {
+  background: #222;
+  border-radius: 10px;
+  padding: 18px 20px;
+  color: #fff;
+  box-shadow: 0 2px 10px #FFD70022;
+}
+.fraudscan-results h3 {
+  color: #FFD700;
+  margin-bottom: 12px;
+}
+.fraudscan-results ul {
+  margin: 0;
+  padding-left: 18px;
+}
+.fraudscan-results li {
+  margin-bottom: 8px;
+}

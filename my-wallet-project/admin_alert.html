@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Alerts (Bonus) | WalletX Admin</title>
+  <link rel="stylesheet" href="Style.css/admin.css">
+  <link rel="stylesheet" href="Style.css/alerts.css">
+</head>
+<body>
+  <nav class="sidebar">
+    <div class="logo">💳 WalletX Admin</div>
+    <ul>
+      <li><a href="admin_dashboard.html">Dashboard</a></li>
+      <li><a href="admin_Users.html">Users</a></li>
+      <li><a href="admin_transactions.html">Transactions</a></li>
+      <li><a href="admin_flagged.html">Flagged Activity</a></li>
+      <li><a href="admin_reports.html">Reports</a></li>
+      <li><a href="login.html">Admin Logout</a></li>
+      <li class="bonus"><a href="admin_fraudScan.html">Fraud Scan (Bonus)</a></li>
+      <li class="bonus"><a href="admin_softdelete.html">Soft Delete (Bonus)</a></li>
+      <li class="bonus active"><a href="admin_alert.html">Alerts (Bonus)</a></li>
+    </ul>
+  </nav>
+  <main class="admin-main">
+    <section>
+      <h2>Alerts (Bonus)</h2>
+      <div id="alertsList" class="alerts-list"></div>
+    </section>
+  </main>
+  <script>
+    async function loadAlerts() {
+      const token = localStorage.getItem('token');
+      const res = await fetch('http://localhost:4000/api/admin/alerts', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      const alerts = await res.json();
+      let html = "";
+      if (!Array.isArray(alerts) || alerts.length === 0) {
+        html = `<div class="alert-card empty">No alerts found.</div>`;
+      } else {
+        alerts.forEach(alert => {
+          html += `
+            <div class="alert-card${alert.read ? ' read' : ''}">
+              <div class="alert-type">${alert.type}</div>
+              <div class="alert-message">${alert.message}</div>
+              <div class="alert-meta">
+                <span>${alert.user?.email || 'N/A'}</span>
+                <span>${new Date(alert.createdAt).toLocaleString()}</span>
+              </div>
+              <button class="btn-mark-read" onclick="markRead('${alert._id}', this)" ${alert.read ? 'disabled' : ''}>
+                ${alert.read ? 'Read' : 'Mark as Read'}
+              </button>
+            </div>
+          `;
+        });
+      }
+      document.getElementById('alertsList').innerHTML = html;
+    }
+    async function markRead(id, btn) {
+      const token = localStorage.getItem('token');
+      await fetch(`http://localhost:4000/api/admin/alerts/${id}/read`, {
+        method: 'PATCH',
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      btn.textContent = "Read";
+      btn.disabled = true;
+      btn.closest('.alert-card').classList.add('read');
+    }
+    window.onload = loadAlerts;
+  </script>
+</body>
+</html>

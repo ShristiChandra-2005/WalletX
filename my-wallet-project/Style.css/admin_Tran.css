@@ -1,0 +1,257 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  background: #181818;
+  color: #ffd700;
+}
+
+.sidebar {
+  background: #111;
+  color: #ffd700;
+  width: 230px;
+  min-height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  border-radius: 0 14px 14px 0;
+  box-shadow: 2px 0 16px #0008;
+  z-index: 100;
+}
+
+.sidebar .logo {
+  font-size: 1.3em;
+  font-weight: bold;
+  padding: 28px 0 12px 28px;
+  color: #ffd700;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 2px;
+}
+
+.sidebar ul li a, .sidebar ul li.bonus a {
+  display: block;
+  color: #ffd700;
+  text-decoration: none;
+  padding: 14px 32px;
+  font-size: 1.08em;
+  border-radius: 0 24px 24px 0;
+  transition: background 0.18s, color 0.18s, font-weight 0.18s;
+}
+.sidebar ul li.active a,
+.sidebar ul li a:hover {
+  background: #ffd700;
+  color: #181818;
+  font-weight: bold;
+}
+
+.sidebar ul li.bonus a {
+  color: #00e6ff;
+  font-size: 1em;
+  font-style: italic;
+  background: none;
+  border-left: 3px solid #00e6ff;
+  padding-left: 28px;
+}
+.sidebar ul li.bonus a:hover {
+  background: #00e6ff33;
+  color: #fff;
+}
+
+.main-content {
+  margin-left: 230px;
+  padding: 36px 36px 36px 36px;
+  min-height: 100vh;
+  background: #181818;
+}
+
+h2 {
+  color: #ffd700;
+  margin-bottom: 24px;
+  font-size: 1.6em;
+  letter-spacing: 1px;
+}
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: #232323;
+  padding: 14px 18px;
+  border-radius: 10px;
+  margin-bottom: 22px;
+  align-items: center;
+  box-shadow: 0 2px 12px #ffd70011;
+}
+
+.filter-bar input[type="text"],
+.filter-bar select,
+.filter-bar input[type="date"] {
+  padding: 7px 12px;
+  border-radius: 6px;
+  border: 1.5px solid #ffd70055;
+  background: #222;
+  color: #ffd700;
+  font-size: 1em;
+  outline: none;
+  transition: border 0.2s;
+}
+.filter-bar input:focus,
+.filter-bar select:focus {
+  border-color: #ffd700;
+}
+
+.filter-bar button {
+  background: #ffd700;
+  color: #181818;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background 0.2s, color 0.2s;
+  box-shadow: 0 2px 8px #ffd70033;
+}
+.filter-bar button:hover {
+  background: #fff;
+  color: #ffd700;
+}
+
+.spinner {
+  border: 4px solid #ffd70044;
+  border-top: 4px solid #ffd700;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  animation: spin 1s linear infinite;
+  margin: 18px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #232323;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px #ffd70022;
+  margin-top: 10px;
+}
+
+th, td {
+  padding: 14px 12px;
+  text-align: left;
+  color: #ffd700;
+}
+
+th {
+  background: #181818;
+  font-size: 1.05em;
+  font-weight: bold;
+  border-bottom: 2px solid #ffd70022;
+}
+
+tbody tr {
+  background: #232323;
+  border-bottom: 1px solid #ffd70011;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+tbody tr:hover {
+  background: #ffd70022;
+}
+
+.flagged {
+  color: #FF4500;
+  font-weight: bold;
+}
+
+#transactionModal {
+  display: none;
+  position: fixed;
+  left: 0; top: 0; right: 0; bottom: 0;
+  background: rgba(24,24,24,0.85);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+}
+#transactionModal .close-btn {
+  position: absolute;
+  right: 30px;
+  top: 20px;
+  font-size: 2em;
+  color: #ffd700;
+  cursor: pointer;
+}
+#modalContent {
+  background: #232323;
+  color: #ffd700;
+  border-radius: 16px;
+  padding: 32px 40px;
+  box-shadow: 0 8px 32px #ffd70044;
+  min-width: 320px;
+  max-width: 400px;
+  margin: 60px auto;
+  position: relative;
+}
+#modalContent h3 {
+  margin-top: 0;
+  color: #ffd700;
+  font-size: 1.25em;
+}
+#modalContent button {
+  background: #ffd700;
+  color: #181818;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 22px;
+  font-weight: bold;
+  font-size: 1em;
+  cursor: pointer;
+  margin-top: 18px;
+  transition: background 0.2s, color 0.2s;
+}
+#modalContent button:hover {
+  background: #fff;
+  color: #ffd700;
+}
+
+@media (max-width: 900px) {
+  .main-content {
+    padding: 18px 2vw 18px 2vw;
+  }
+  #modalContent {
+    padding: 18px 8vw;
+  }
+}
+
+@media (max-width: 700px) {
+  .sidebar {
+    width: 100vw;
+    min-width: unset;
+    height: auto;
+    flex-direction: row;
+    align-items: center;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .main-content {
+    margin-left: 0;
+    padding: 12px 2vw;
+  }
+  table, #modalContent {
+    font-size: 0.97em;
+  }
+}

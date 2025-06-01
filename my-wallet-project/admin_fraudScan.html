@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fraud Scan | WalletX Admin</title>
+  <link rel="stylesheet" href="Style.css/fraudscan.css">
+  <link rel="stylesheet" href="Style.css/admin.css">
+</head>
+<body>
+  <nav class="sidebar">
+    <div class="logo">💳 WalletX Admin</div>
+    <ul>
+      <li class="active"><a href="admin_dashboard.html">Dashboard</a></li>
+      <li><a href="admin_Users.html">Users</a></li>
+      <li><a href="admin_transactions.html">Transactions</a></li>
+      <li><a href="admin_flagged.html">Flagged Activity</a></li>
+      <li><a href="admin_reports.html">Reports</a></li>
+      <li><a href="login.html">Admin Logout</a></li>
+      <!-- BONUS: Add-ons for extra points -->
+      <li class="bonus"><a href="admin_fraudScan.html">Fraud Scan (Bonus)</a></li>
+      <li class="bonus"><a href="admin_softdelete.html">Soft Delete (Bonus)</a></li>
+      <li class="bonus"><a href="admin_alert.html">Alerts (Bonus)</a></li>
+    </ul>
+  </nav>
+  <main class="admin-main">
+    <section>
+      <h1>Fraud Scan</h1>
+      <div class="fraudscan-card">
+        <div>
+          <strong>Last Scan:</strong> <span id="lastScanTime">Loading...</span>
+        </div>
+        <div>
+          <strong>Transactions Checked:</strong> <span id="checkedCount">0</span>
+        </div>
+        <div>
+          <strong>Flagged Transactions:</strong> <span id="flaggedCount">0</span>
+        </div>
+        <button id="runScanBtn">Run Fraud Scan Now</button>
+      </div>
+      <div class="fraudscan-results">
+        <h3>Flagged Transactions (Last Scan)</h3>
+        <ul id="flaggedList">
+          <li>Loading...</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+  <script>
+    async function loadFraudScanStatus() {
+      const token = localStorage.getItem('token');
+      const res = await fetch('http://localhost:4000/api/admin/fraudscan/status', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      const data = await res.json();
+      document.getElementById('lastScanTime').textContent = data.lastScan || "Never";
+      document.getElementById('checkedCount').textContent = data.checkedCount || 0;
+      document.getElementById('flaggedCount').textContent = data.flaggedCount || 0;
+      const list = document.getElementById('flaggedList');
+      list.innerHTML = '';
+      if (Array.isArray(data.flaggedTxns) && data.flaggedTxns.length > 0) {
+        data.flaggedTxns.forEach(tx => {
+          const li = document.createElement('li');
+          li.textContent = `${tx.type} - ₹${tx.amount} by ${tx.user?.email || 'Unknown'} (${new Date(tx.createdAt).toLocaleString()})`;
+          list.appendChild(li);
+        });
+      } else {
+        list.innerHTML = '<li>No flagged transactions in last scan.</li>';
+      }
+    }
+    document.getElementById('runScanBtn').onclick = async function() {
+      const token = localStorage.getItem('token');
+      document.getElementById('runScanBtn').textContent = "Scanning...";
+      await fetch('http://localhost:4000/api/admin/fraudscan/run', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      document.getElementById('runScanBtn').textContent = "Run Fraud Scan Now";
+      loadFraudScanStatus();
+    };
+    window.onload = loadFraudScanStatus;
+  </script>
+</body>
+</html>

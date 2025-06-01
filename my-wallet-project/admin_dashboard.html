@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard | WalletX</title>
+  <link rel="stylesheet" href="Style.css/admin.css">
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <nav class="sidebar">
+    <div class="logo">💳 WalletX Admin</div>
+    <ul>
+      <li class="active"><a href="admin_dashboard.html">Dashboard</a></li>
+      <li><a href="admin_Users.html">Users</a></li>
+      <li><a href="admin_transactions.html">Transactions</a></li>
+      <li><a href="admin_flagged.html">Flagged Activity</a></li>
+      <li><a href="admin_reports.html">Reports</a></li>
+      <li><a href="login.html">Admin Logout</a></li>
+      <!-- BONUS: Add-ons for extra points -->
+      <li class="bonus"><a href="admin_fraudScan.html">Fraud Scan (Bonus)</a></li>
+      <li class="bonus"><a href="admin_softdelete.html">Soft Delete (Bonus)</a></li>
+      <li class="bonus"><a href="admin_alert.html">Alerts (Bonus)</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main Dashboard Content -->
+  <main class="admin-main">
+    <section>
+      <h1>Admin Dashboard</h1>
+      <div class="admin-cards">
+        <div class="card">
+          <h2>Total Users</h2>
+          <div class="card-value" id="totalUsers">Loading...</div>
+        </div>
+        <div class="card">
+          <h2>Total Balance</h2>
+          <div class="card-value" id="totalBalance">₹0</div>
+        </div>
+        <div class="card">
+          <h2>Flagged Transactions</h2>
+          <div class="card-value" id="flaggedCount">0</div>
+        </div>
+        <div class="card">
+          <h2>Top User</h2>
+          <div class="card-value" id="topUser">Loading...</div>
+        </div>
+      </div>
+      <!-- Bonus: Fraud Scan Status -->
+      <div class="bonus-section">
+        <h3>Last Fraud Scan (Bonus)</h3>
+        <div id="fraudScanStatus">Not scheduled</div>
+      </div>
+      <!-- Bonus: Admin Alerts -->
+      <div class="bonus-section">
+        <h3>Recent Admin Alerts (Bonus)</h3>
+        <ul id="adminAlerts">
+          <li>No alerts yet.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+  <script>
+    window.onload = async function() {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        window.location.href = "login.html";
+        return;
+      }
+      try {
+        // 1. Total Users
+        let res = await fetch('http://localhost:4000/api/admin/total-users', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        let data = await res.json();
+        if (res.ok && typeof data.totalUsers !== "undefined") {
+          document.getElementById('totalUsers').textContent = data.totalUsers;
+        } else {
+          document.getElementById('totalUsers').textContent = "Error";
+        }
+
+        // 2. Total Balance
+        res = await fetch('http://localhost:4000/api/admin/total-balances', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        data = await res.json();
+        if (res.ok && typeof data.totalBalance !== "undefined") {
+          document.getElementById('totalBalance').textContent = "₹" + data.totalBalance;
+        } else {
+          document.getElementById('totalBalance').textContent = "₹0";
+        }
+
+        // 3. Flagged Transactions count
+        res = await fetch('http://localhost:4000/api/admin/flagged', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        data = await res.json();
+        if (res.ok && Array.isArray(data)) {
+          document.getElementById('flaggedCount').textContent = data.length;
+        } else {
+          document.getElementById('flaggedCount').textContent = "0";
+        }
+
+        // 4. Top User
+        res = await fetch('http://localhost:4000/api/admin/top-users', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        data = await res.json();
+        if (res.ok && Array.isArray(data) && data.length > 0) {
+          document.getElementById('topUser').textContent = `${data[0].name} (₹${data[0].balance})`;
+        } else {
+          document.getElementById('topUser').textContent = "No users";
+        }
+
+        // BONUS: Fraud Scan Status (mock)
+        document.getElementById('fraudScanStatus').textContent = "Last run: Today, 2:00 AM";
+
+        // BONUS: Admin Alerts (REAL)
+        res = await fetch('http://localhost:4000/api/admin/alerts', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        data = await res.json();
+        const alertsList = document.getElementById('adminAlerts');
+        if (res.ok && Array.isArray(data) && data.length > 0) {
+          alertsList.innerHTML = data.map(alert =>
+            `<li>${alert.message}</li>`
+          ).join('');
+        } else {
+          alertsList.innerHTML = '<li>No alerts yet.</li>';
+        }
+      } catch (err) {
+        document.getElementById('totalUsers').textContent = "Error";
+        document.getElementById('totalBalance').textContent = "₹0";
+        document.getElementById('flaggedCount').textContent = "0";
+        document.getElementById('topUser').textContent = "Error";
+        document.getElementById('adminAlerts').innerHTML = '<li>Error loading alerts.</li>';
+      }
+    }
+  </script>
+</body>
+</html>

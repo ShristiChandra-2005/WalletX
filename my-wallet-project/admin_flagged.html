@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flagged Activity | WalletX</title>
+  <link rel="stylesheet" href="Style.css/admin.css">
+  <link rel="stylesheet" href="Style.css/Style4.css">
+</head>
+<body>
+  <nav class="sidebar">
+    <div class="logo">💳 WalletX Admin</div>
+    <ul>
+      <li><a href="admin_dashboard.html">Dashboard</a></li>
+      <li><a href="admin_Users.html">Users</a></li>
+      <li><a href="admin_transactions.html">Transactions</a></li>
+      <li class="active"><a href="admin_flagged.html">Flagged Activity</a></li>
+      <li><a href="admin_reports.html">Reports</a></li>
+      <li><a href="login.html">Admin Logout</a></li>
+      <li class="bonus"><a href="admin_fraudScan.html">Fraud Scan (Bonus)</a></li>
+      <li class="bonus"><a href="admin_softdelete.html">Soft Delete (Bonus)</a></li>
+      <li class="bonus"><a href="admin_alert.html">Alerts (Bonus)</a></li>
+    </ul>
+  </nav>
+  <main class="admin-main">
+    <section class="flagged-section">
+      <h2>Flagged Activity</h2>
+      <div class="flagged-card">
+        <table id="flaggedTable">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Amount</th>
+              <th>Type</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="flaggedList">
+            <!-- Flagged transactions will be inserted here by JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script>
+    window.onload = async function() {
+      const token = localStorage.getItem('token');
+      const res = await fetch('http://localhost:4000/api/admin/flagged', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      const flagged = await res.json();
+      let html = "";
+      if (!Array.isArray(flagged) || flagged.length === 0) {
+        html = `<tr><td colspan="6" style="text-align:center;">No flagged transactions found.</td></tr>`;
+      } else {
+        flagged.forEach(tx => {
+          html += `<tr>
+            <td>${tx.user?.email || 'N/A'}</td>
+            <td>₹${tx.amount}</td>
+            <td>${tx.type}</td>
+            <td>${new Date(tx.createdAt).toLocaleString()}</td>
+            <td><span class="flagged-status">⚠️ Flagged</span></td>
+            <td><button class="btn-yellow" onclick="investigate('${tx._id}')">Investigate</button></td>
+          </tr>`;
+        });
+      }
+      document.getElementById('flaggedList').innerHTML = html;
+    };
+
+   let currentTxId = null;
+let currentTxRow = null;
+
+function investigate(id) {
+  currentTxId = id;
+  // Optionally, fetch more details from backend here
+  const row = document.querySelector(`button[onclick="investigate('${id}')"]`).closest('tr');
+  currentTxRow = row;
+  const details = Array.from(row.children).map(td => td.innerHTML);
+  document.getElementById('modalDetails').innerHTML =
+    `<b>User:</b> ${details[0]}<br>
+     <b>Amount:</b> ${details[1]}<br>
+     <b>Type:</b> ${details[2]}<br>
+     <b>Date:</b> ${details[3]}<br>
+     <b>Status:</b> ${details[4]}`;
+  document.getElementById('investigateModal').style.display = 'flex';
+}
+
+function closeModal() {
+  document.getElementById('investigateModal').style.display = 'none';
+  currentTxId = null;
+  currentTxRow = null;
+}
+
+function approveTransaction() {
+  if (currentTxRow) {
+    currentTxRow.querySelector('.flagged-status').innerHTML = "✅ Approved";
+    currentTxRow.querySelector('.flagged-status').style.color = "#28a745";
+    currentTxRow.querySelector('button').disabled = true;
+  }
+  closeModal();
+  // In a real app, call backend API to approve
+}
+
+function rejectTransaction() {
+  if (currentTxRow) {
+    currentTxRow.querySelector('.flagged-status').innerHTML = "❌ Rejected";
+    currentTxRow.querySelector('.flagged-status').style.color = "#ff4444";
+    currentTxRow.querySelector('button').disabled = true;
+  }
+  closeModal();
+  // In a real app, call backend API to reject
+}
+
+  </script>
+</body>
+</html>

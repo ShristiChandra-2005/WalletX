@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Withdraw | WalletX</title>
+  <link rel="stylesheet" href="Style.css/withDraw.css">
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo">💳 WalletX</div>
+    <a href="userPanel.html">Dashboard</a>
+    <a href="deposit.html">Deposit</a>
+    <a href="withdraw.html" class="active">Withdraw</a>
+    <a href="transfer.html">Transfer</a>
+    <!-- <a href="Transactions.html">Transactions</a> -->
+    <a href="#" onclick="logout()">Logout</a>
+  </div>
+  <button class="logout-fixed" onclick="logout()">Logout</button>
+  <div class="main-content">
+    <main class="main">
+      <h2>Withdraw Funds</h2>
+      <form id="withdrawForm" class="rectangle-form">
+        <input type="number" id="withdrawAmount" placeholder="Amount" required min="1" />
+        <select id="currency" required>
+          <option value="">Select currency</option>
+          <option value="INR">INR (₹)</option>
+          <option value="USD">USD ($)</option>
+          <option value="EUR">EUR (€)</option>
+        </select>
+        <button type="submit">Withdraw</button>
+      </form>
+      <div id="withdrawStatus"></div>
+    </main>
+  </div>
+  <footer>
+    <a href="#">Contact</a> | 
+    <a href="#">Terms</a> | 
+    <a href="#">Privacy</a>
+  </footer>
+  <script>
+    document.getElementById('withdrawForm').onsubmit = async function(e) {
+      e.preventDefault();
+      const amount = Number(document.getElementById('withdrawAmount').value);
+      const currency = document.getElementById('currency').value;
+      const token = localStorage.getItem('token');
+      const statusDiv = document.getElementById('withdrawStatus');
+      statusDiv.textContent = "Processing...";
+      if (!currency) {
+        statusDiv.style.color = "red";
+        statusDiv.textContent = "Please select a currency.";
+        return;
+      }
+      try {
+        const res = await fetch('http://localhost:4000/api/withdraw', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({ amount, currency })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          statusDiv.style.color = "green";
+          statusDiv.textContent = data.message + ` (New balance: ${currency} ${data.balance})`;
+          document.getElementById('withdrawAmount').value = '';
+          document.getElementById('currency').value = '';
+        } else {
+          statusDiv.style.color = "red";
+          statusDiv.textContent = data.message || "Withdraw failed.";
+        }
+      } catch (err) {
+        statusDiv.style.color = "red";
+        statusDiv.textContent = "Network error. Please try again.";
+      }
+    };
+    function logout() {
+      localStorage.removeItem('token');
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>

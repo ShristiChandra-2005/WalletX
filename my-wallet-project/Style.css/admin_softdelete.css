@@ -1,0 +1,54 @@
+.softdelete-table-container {
+  background: #222;
+  border-radius: 14px;
+  box-shadow: 0 4px 24px #FFD70022;
+  padding: 24px 16px;
+  margin-top: 24px;
+  color: #FFD700;
+}
+#softDeleteTable {
+  width: 100%;
+  border-collapse: collapse;
+  color: #FFD700;
+}
+#softDeleteTable th, #softDeleteTable td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #FFD70022;
+  text-align: left;
+}
+#softDeleteTable th {
+  background: #181818;
+  font-weight: bold;
+  font-size: 1.08em;
+}
+#softDeleteTable tr:hover {
+  background: #FFD70022;
+}
+.restore-btn, .delete-btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: bold;
+  margin-right: 6px;
+  cursor: pointer;
+  border: none;
+  font-size: 1em;
+  transition: background 0.2s, color 0.2s;
+}
+.restore-btn {
+  background: #FFD700;
+  color: #181818;
+}
+.restore-btn:hover {
+  background: #222;
+  color: #FFD700;
+  border: 1.5px solid #FFD700;
+}
+.delete-btn {
+  background: #ff4444;
+  color: #fff;
+}
+.delete-btn:hover {
+  background: #fff;
+  color: #ff4444;
+  border: 1.5px solid #ff4444;
+}

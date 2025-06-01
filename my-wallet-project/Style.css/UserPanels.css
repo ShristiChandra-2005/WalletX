@@ -1,0 +1,312 @@
+:root {
+  --sidebar-bg: #22404a;
+  --sidebar-accent: #ffd700;
+  --main-bg: #22343c;
+  --card-bg: #1a2428;
+  --card-action-bg: #11181b;
+  --card-action-border: #ffd70044;
+  --action-btn-bg: #ffd700;
+  --action-btn-color: #22343c;
+  --action-btn-hover: #fff;
+  --action-btn-hover-text: #ffd700;
+  --secondary-btn-bg: #2f5562;
+  --secondary-btn-color: #ffd700;
+  --header-bg: #1a2b33;
+  --header-color: #ffd700;
+  --text: #f5f6fa;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  background: var(--main-bg);
+  color: var(--text);
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+}
+
+.sidebar {
+  background: var(--sidebar-bg);
+  width: 210px;
+  min-width: 210px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 24px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  transition: width 0.3s;
+  z-index: 100;
+  box-shadow: 2px 0 16px #0006;
+}
+
+.sidebar.collapsed {
+  width: 56px;
+  min-width: 56px;
+  align-items: center;
+}
+.sidebar.collapsed a:not(.sidebar-toggle) {
+  display: none;
+}
+.sidebar-toggle {
+  background: none;
+  border: none;
+  color: var(--sidebar-accent);
+  font-size: 2em;
+  margin: 0 0 20px 10px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.sidebar-toggle:hover {
+  color: #fff;
+}
+.sidebar a {
+  color: var(--sidebar-accent);
+  text-decoration: none;
+  padding: 14px 28px;
+  width: 100%;
+  font-size: 1.08em;
+  font-weight: 500;
+  border-left: 4px solid transparent;
+  transition: background 0.2s, color 0.2s, border-left 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sidebar a.active,
+.sidebar a:hover {
+  background: #2f5562;
+  color: #fff;
+  border-left: 4px solid var(--sidebar-accent);
+}
+
+.main-content {
+  margin-left: 210px;
+  padding: 32px 32px 32px 32px;
+  width: 100%;
+  min-height: 100vh;
+  background: var(--main-bg);
+  transition: margin-left 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.sidebar.collapsed ~ .main-content {
+  margin-left: 56px;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background: var(--header-bg);
+  color: var(--header-color);
+  padding: 12px 24px;
+  border-radius: 12px;
+  margin-bottom: 32px;
+  box-shadow: 0 2px 12px #ffd70022;
+  width: 100%;
+  max-width: 800px;
+}
+.dashboard-header #userEmail {
+  margin-right: 24px;
+  font-weight: 500;
+}
+.logout-btn {
+  background: var(--action-btn-bg);
+  color: var(--action-btn-color);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background 0.2s, color 0.2s;
+}
+.logout-btn:hover {
+  background: var(--action-btn-hover);
+  color: var(--action-btn-hover-text);
+}
+
+.balance-card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px #ffd70022;
+  padding: 28px 32px;
+  max-width: 340px;
+  margin-bottom: 32px;
+  text-align: center;
+  width: 100%;
+}
+.balance-card h2 {
+  margin: 0 0 10px 0;
+  color: var(--sidebar-accent);
+  font-size: 1.3em;
+  letter-spacing: 1px;
+}
+#currentBalance {
+  font-size: 2.2em;
+  font-weight: bold;
+  color: #fff;
+  letter-spacing: 2px;
+}
+
+.action-cards {
+  display: flex;
+  gap: 28px;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 900px;
+}
+.card-action {
+  background: var(--card-action-bg);
+  border-radius: 14px;
+  box-shadow: 0 2px 12px var(--card-action-border);
+  padding: 24px 24px 18px 24px;
+  min-width: 210px;
+  max-width: 270px;
+  flex: 1 1 210px;
+  text-align: center;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.card-action:hover {
+  box-shadow: 0 8px 32px #ffd70055;
+  transform: translateY(-3px) scale(1.04);
+}
+.card-action .icon {
+  font-size: 2.2em;
+  margin-bottom: 10px;
+}
+.card-action .action-title {
+  font-size: 1.15em;
+  font-weight: bold;
+  color: var(--sidebar-accent);
+  margin-bottom: 5px;
+  letter-spacing: 1px;
+}
+.card-action p {
+  font-size: 0.98em;
+  color: #c7d0e0;
+  margin-bottom: 12px;
+}
+.card-btn {
+  background: var(--action-btn-bg);
+  color: var(--action-btn-color);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-weight: bold;
+  font-size: 1em;
+  text-decoration: none;
+  margin-top: auto;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px #ffd70033;
+  cursor: pointer;
+  display: inline-block;
+}
+.card-btn:hover {
+  background: #fff;
+  color: var(--action-btn-hover-text);
+  box-shadow: 0 4px 16px #ffd70066;
+}
+
+.transactions-section {
+  background: var(--card-bg);
+  border-radius: 14px;
+  box-shadow: 0 2px 12px #ffd70022;
+  padding: 24px 18px;
+  margin-top: 18px;
+  width: 100%;
+  max-width: 800px;
+}
+.transactions-section h3 {
+  color: var(--sidebar-accent);
+  margin-top: 0;
+}
+#recentTransactions {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  color: #c7d0e0;
+}
+#recentTransactions li {
+  padding: 10px 0;
+  border-bottom: 1px solid #ffd70022;
+  font-size: 1em;
+}
+#recentTransactions li.empty {
+  text-align: center;
+  color: #ffd70099;
+  font-style: italic;
+}
+#recentTransactions li:last-child {
+  border-bottom: none;
+}
+.action-btn.secondary {
+  background: var(--secondary-btn-bg);
+  color: var(--secondary-btn-color);
+  border: 1.5px solid var(--sidebar-accent);
+  padding: 10px 24px;
+}
+.action-btn.secondary:hover {
+  background: var(--sidebar-accent);
+  color: var(--secondary-btn-bg);
+}
+
+@media (max-width: 900px) {
+  .main-content {
+    padding: 18px 8vw 18px 8vw;
+  }
+  .balance-card, .transactions-section {
+    padding: 18px 8vw;
+  }
+  .action-cards {
+    gap: 16px;
+  }
+}
+@media (max-width: 700px) {
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    min-width: 0;
+    height: auto;
+    flex-direction: row;
+    align-items: center;
+    padding: 0;
+    z-index: 100;
+    box-shadow: none;
+    border-radius: 0;
+    background: var(--sidebar-bg);
+    overflow-x: auto;
+  }
+  .sidebar.collapsed {
+    width: 56px;
+    min-width: 56px;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+  }
+  .main-content, .sidebar.collapsed ~ .main-content {
+    margin-left: 0;
+    padding: 12px 2vw;
+  }
+  .action-cards {
+    flex-direction: column;
+    gap: 12px;
+  }
+}

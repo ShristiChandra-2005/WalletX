@@ -1,0 +1,229 @@
+body {
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  margin: 0;
+  background: linear-gradient(120deg, #0f2027, #2c5364 100%);
+  color: #f5f6fa;
+  min-height: 100vh;
+}
+
+.navbar {
+  background: #181c2f;
+  color: #ffd700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 60px;
+  box-shadow: 0 2px 16px #0008;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 1.6em;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #ffd700;
+}
+
+.nav-links a {
+  color: #ffd700;
+  text-decoration: none;
+  margin-left: 24px;
+  font-weight: 500;
+  transition: color 0.2s;
+  border-bottom: 2px solid transparent;
+}
+.nav-links a.active, .nav-links a:hover {
+  color: #fff;
+  border-bottom: 2px solid #ffd700;
+}
+
+.main {
+  max-width: 900px;
+  margin: 40px auto 0 auto;
+  padding: 24px;
+  background: rgba(24, 28, 47, 0.96);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px #0006;
+}
+
+.about-hero {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.brand-highlight {
+  color: #ffd700;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.tagline {
+  font-size: 1.1em;
+  color: #c7d0e0;
+  margin-top: 8px;
+}
+
+.about-section {
+  margin-bottom: 32px;
+}
+.about-cards {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+.about-card {
+  flex: 1 1 280px;
+  background: #232b47;
+  border-radius: 14px;
+  padding: 22px 18px;
+  box-shadow: 0 2px 12px #ffd70022;
+  margin-bottom: 16px;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s, transform 0.7s;
+}
+.about-card.visible {
+  opacity: 1;
+  transform: none;
+}
+
+.features-section h2, .values-section h2, .team-section h2, .contact-section h2 {
+  color: #ffd700;
+  margin-top: 0;
+}
+.features-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px 0;
+}
+.features-list li {
+  background: #1b2238;
+  margin-bottom: 10px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 1px 6px #ffd70011;
+  transition: background 0.2s;
+}
+.features-list li:hover {
+  background: #ffd70022;
+  color: #ffd700;
+}
+
+.values-section {
+  margin-bottom: 24px;
+}
+.values-list {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.value-card {
+  background: #ffd70022;
+  color: #ffd700;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px #ffd70022;
+  margin-bottom: 10px;
+}
+
+.vision-quote {
+  font-style: italic;
+  color: #c7d0e0;
+  margin-top: 12px;
+}
+
+.team-section {
+  margin-bottom: 24px;
+}
+.team-member-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #232b47;
+  padding: 14px 18px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 12px #ffd70022;
+}
+.avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: #ffd700;
+}
+
+.contact-link {
+  color: #ffd700;
+  text-decoration: underline;
+}
+.contact-link:hover {
+  color: #fff;
+}
+
+.about-log {
+  margin-top: 32px;
+  background: #232b47;
+  border-radius: 12px;
+  padding: 18px 20px;
+  box-shadow: 0 2px 12px #ffd70022;
+}
+.about-log h3 {
+  color: #ffd700;
+  margin-top: 0;
+}
+#activity-log {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+#activity-log li {
+  padding: 7px 0;
+  border-bottom: 1px solid #ffd70022;
+  font-size: 1em;
+  color: #c7d0e0;
+}
+#activity-log li:last-child {
+  border-bottom: none;
+}
+
+footer {
+  text-align: center;
+  background: #181c2f;
+  color: #ffd700;
+  padding: 18px 0 12px 0;
+  margin-top: 40px;
+  font-size: 1em;
+  border-radius: 0 0 18px 18px;
+}
+footer a {
+  color: #ffd700;
+  text-decoration: none;
+  margin: 0 8px;
+  transition: color 0.2s;
+}
+footer a:hover {
+  color: #fff;
+}
+
+@media (max-width: 700px) {
+  .main {
+    padding: 8px;
+    border-radius: 0;
+  }
+  .about-cards, .values-list {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .team-member-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

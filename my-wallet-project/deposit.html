@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Deposit | WalletX</title>
+  <style>
+    body {
+      background: #111;
+      color: #FFD700;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+    }
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 200px;
+      height: 100vh;
+      background: #181818;
+      padding-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .sidebar a {
+      color: #FFD700;
+      text-decoration: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      transition: background 0.2s, color 0.2s;
+      margin: 0 10px;
+      font-weight: 500;
+    }
+    .sidebar a.active, .sidebar a:hover {
+      background: #FFD700;
+      color: #181818;
+    }
+    .main-content {
+      margin-left: 220px;
+      padding: 40px 20px;
+      min-height: 100vh;
+      background: #111;
+    }
+    .dashboard-header {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    .dashboard-header span {
+      margin-right: 20px;
+      font-size: 1.1em;
+    }
+    .dashboard-header button {
+      background: #FFD700;
+      color: #181818;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .dashboard-header button:hover {
+      background: #ffb700;
+    }
+    main.main {
+      max-width: 400px;
+      margin: 60px auto 0 auto;
+      background: #181818;
+      border-radius: 12px;
+      padding: 32px 30px 24px 30px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 28px;
+      color: #FFD700;
+      letter-spacing: 1px;
+    }
+    form#transferForm {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    form#transferForm input, form#transferForm select {
+      padding: 12px;
+      border-radius: 6px;
+      border: none;
+      background: #222;
+      color: #FFD700;
+      font-size: 1em;
+      outline: none;
+      transition: box-shadow 0.2s;
+    }
+    form#transferForm input:focus, form#transferForm select:focus {
+      box-shadow: 0 0 0 2px #FFD70088;
+    }
+    form#transferForm button {
+      background: #FFD700;
+      color: #181818;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      padding: 12px;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    form#transferForm button:hover {
+      background: #ffb700;
+      color: #222;
+    }
+    #transferStatus {
+      margin-top: 15px;
+      font-weight: 500;
+      min-height: 24px;
+    }
+    footer {
+      text-align: center;
+      color: #FFD700;
+      background: #181818;
+      padding: 16px 0;
+      position: fixed;
+      width: 100vw;
+      left: 0;
+      bottom: 0;
+      font-size: 1em;
+      letter-spacing: 1px;
+    }
+    footer a {
+      color: #FFD700;
+      text-decoration: underline;
+      margin: 0 10px;
+      transition: color 0.2s;
+    }
+    footer a:hover {
+      color: #fff;
+    }
+    @media (max-width: 700px) {
+      .main-content { margin-left: 0; }
+      .sidebar { position: static; width: 100%; height: auto; flex-direction: row; justify-content: center; }
+      main.main { margin: 30px 0; }
+    }
+  </style>
+</head>
+<body>
+  </style>
+  
+  <link rel="stylesheet" href="Style.css/deposite.css">
+  <!-- <link rel="stylesheet" href="Style.css/style2.css"> -->
+
+</head>
+<body>
+  <script>
+    if (!localStorage.getItem('token')) {
+      window.location.href = "login.html";
+    }
+  </script>
+  <div class="sidebar">
+    <a href="userPanel.html">Dashboard</a>
+    <a href="deposit.html" class="active">Deposit</a>
+    <a href="withdraw.html">Withdraw</a>
+    <a href="transfer.html">Transfer</a>
+    <a href="#" onclick="logout()">Logout</a>
+  </div>
+  <div class="main-content">
+    <nav class="dashboard-header">
+      <span id="userEmail"></span>
+      <button onclick="logout()">Logout</button>
+    </nav>
+    <main class="main">
+      <div class="deposit-card">
+        <h2>Deposit Funds</h2>
+        <form id="depositForm">
+          <input type="number" id="depositAmount" placeholder="Amount" required min="1" />
+          <select id="currency" required>
+            <option value="">Select currency</option>
+            <option value="INR">INR (₹)</option>
+            <option value="USD">USD ($)</option>
+            <option value="EUR">EUR (€)</option>
+          </select>
+          <button type="submit">Deposit</button>
+        </form>
+        <div id="depositStatus"></div>
+      </div>
+    </main>
+  </div>
+  <footer>
+    <a href="#">Contact</a> | 
+    <a href="#">Terms</a> | 
+    <a href="#">Privacy</a>
+  </footer>
+  <script>
+    document.getElementById('depositForm').onsubmit = async function(e) {
+      e.preventDefault();
+      const amount = Number(document.getElementById('depositAmount').value);
+      const currency = document.getElementById('currency').value;
+      const statusDiv = document.getElementById('depositStatus');
+      statusDiv.textContent = "Processing...";
+      if (!currency) {
+        statusDiv.style.color = "red";
+        statusDiv.textContent = "Please select a currency.";
+        return;
+      }
+      const res = await fetch('http://localhost:4000/api/deposit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify({ amount, currency })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        statusDiv.style.color = "green";
+        statusDiv.textContent = data.message + ` (New balance: ${currency} ${data.balance})`;
+        document.getElementById('depositAmount').value = '';
+        document.getElementById('currency').value = '';
+      } else {
+        statusDiv.style.color = "red";
+        statusDiv.textContent = data.message || "Deposit failed";
+      }
+    };
+    document.getElementById('userEmail').textContent = localStorage.getItem('userEmail') || "";
+    function logout() {
+      localStorage.removeItem('token');
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>

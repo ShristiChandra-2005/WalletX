@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login | WalletX</title>
+  <link rel="stylesheet" href="Style.css/Login.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">💳 WalletX</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="registration.html">Register</a>
+      <a href="login.html" class="active">Login</a>
+    </div>
+  </nav>
+  <main class="main">
+    <h1>Login</h1>
+    <form id="loginForm" autocomplete="on">
+      <label for="role">Login as</label>
+      <select id="role" name="role" required>
+        <option value="user">User</option>
+        <option value="admin">Admin</option>
+      </select>
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" required placeholder="e.g. user@email.com" autocomplete="username">
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" required autocomplete="current-password">
+      <button type="submit">Login</button>
+      <a href="#" class="forgot-link">Forgot password?</a>
+      <div id="loginStatus"></div>
+    </form>
+  </main>
+  <footer>
+    <a href="#">Contact</a> | 
+    <a href="#">Terms</a> | 
+    <a href="#">Privacy</a>
+  </footer>
+  <script>
+    document.getElementById('loginForm').onsubmit = async function(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const role = document.getElementById('role').value;
+      const res = await fetch('http://localhost:4000/api/login', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ email, password, role })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        if (data.token) localStorage.setItem('token', data.token);
+        if (data.role === 'admin') {
+          window.location.href = "admin_dashboard.html";
+        } else {
+          window.location.href = "userPanel.html";
+        }
+      } else {
+        document.getElementById('loginStatus').textContent = data.message || "Login failed.";
+      }
+    };
+  </script>
+</body>
+</html>

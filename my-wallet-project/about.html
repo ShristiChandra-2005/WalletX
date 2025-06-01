@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>About Us | WalletX</title>
+  <link rel="stylesheet" href="Style.css/aboutAs.css">
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="logo">💳 WalletX</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html" class="active">About Us</a>
+      <a href="registration.html">Register</a>
+      <a href="login.html">Login</a>
+    </div>
+  </nav>
+
+  <main class="main">
+    <section class="about-hero">
+      <h1>About <span class="brand-highlight">WalletX</span></h1>
+      <p class="tagline">Your secure, smart, and seamless digital wallet experience.</p>
+    </section>
+    <section class="about-section">
+      <div class="about-cards">
+        <div class="about-card fade-in">
+          <h2>Our Mission</h2>
+          <p>To make digital cash management simple, secure, and accessible for everyone—protecting users from fraud and financial risk.</p>
+        </div>
+        <div class="about-card fade-in">
+          <h2>Our Story</h2>
+          <p>WalletX was created to empower users with safe, transparent, and innovative digital transactions. Every feature is designed with your security and convenience in mind.</p>
+        </div>
+      </div>
+      <div class="features-section">
+        <h2>Key Features</h2>
+        <ul class="features-list">
+          <li><span>🔒</span> Secure registration & login with advanced encryption</li>
+          <li><span>⚡</span> Instant transfers & payments</li>
+          <li><span>🛡️</span> Real-time fraud detection</li>
+          <li><span>📈</span> Transparent transaction history</li>
+          <li><span>👨‍💼</span> Admin oversight for extra security</li>
+        </ul>
+      </div>
+      <div class="values-section">
+        <h2>Our Values & Vision</h2>
+        <div class="values-list">
+          <div class="value-card">Security & Privacy</div>
+          <div class="value-card">Transparency</div>
+          <div class="value-card">User Empowerment</div>
+          <div class="value-card">Continuous Innovation</div>
+        </div>
+        <p class="vision-quote">“We aim to set a new standard in digital wallet security and convenience, empowering users to manage their money with peace of mind.”</p>
+      </div>
+      <div class="team-section">
+        <h2>Meet the Creator</h2>
+        <div class="team-member-card">
+          <img src="assets/shristi-avatar.png" alt="Shristi Chandra" class="avatar">
+          <div>
+            <b>Shristi Chandra</b><br>
+            Product Lead
+          </div>
+        </div>
+        <p>Our passionate team combines expertise in fintech, security, and user experience to deliver a product you can trust.</p>
+      </div>
+      <div class="contact-section">
+        <h2>Contact & Support</h2>
+        <p>
+          Have questions or feedback? Email us at
+          <a href="mailto:support@walletx.com" class="contact-link">support@walletx.com</a>
+          or visit our <a href="contact.html" class="contact-link">Contact page</a>.
+        </p>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <a href="#">Contact</a> | 
+    <a href="#">Terms</a> | 
+    <a href="#">Privacy</a>
+  </footer>
+  <script>
+    // Microinteraction: Fade in cards on scroll
+    const faders = document.querySelectorAll('.fade-in');
+    window.addEventListener('scroll', () => {
+      faders.forEach(card => {
+        const rect = card.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 100) card.classList.add('visible');
+      });
+    });
+  </script>
+</body>
+</html>

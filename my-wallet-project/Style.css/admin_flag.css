@@ -1,0 +1,163 @@
+body {
+  background: #181818;
+  color: #f5f6fa;
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background: #111;
+  color: #ffd700;
+  width: 220px;
+  min-height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  border-radius: 10px 0 0 10px;
+  box-shadow: 2px 0 16px #0006;
+  padding-top: 18px;
+}
+
+.logo {
+  font-size: 1.4em;
+  font-weight: bold;
+  color: #ffd700;
+  padding: 0 24px 18px 24px;
+  margin-bottom: 8px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 5px;
+}
+
+.sidebar ul li a {
+  color: #ffd700;
+  text-decoration: none;
+  display: block;
+  padding: 13px 32px;
+  border-radius: 0 24px 24px 0;
+  font-size: 1.07em;
+  font-weight: 500;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+}
+
+.sidebar ul li.active a,
+.sidebar ul li a:hover {
+  background: #ffd700;
+  color: #181818;
+  font-weight: bold;
+  box-shadow: 2px 2px 14px #ffd70044;
+}
+
+.sidebar ul li.bonus a {
+  color: #00bfff;
+  font-style: italic;
+  font-size: 1em;
+}
+
+.admin-main {
+  margin-left: 220px;
+  padding: 40px 32px 32px 32px;
+  min-height: 100vh;
+  background: #181818;
+}
+
+.flagged-section h2 {
+  color: #ffd700;
+  font-size: 1.7em;
+  margin-top: 0;
+  margin-bottom: 22px;
+  letter-spacing: 1px;
+}
+
+.flagged-card {
+  background: #232323;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px #ffd70022;
+  padding: 28px 18px 18px 18px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+#flaggedTable {
+  width: 100%;
+  border-collapse: collapse;
+  color: #f5f6fa;
+  font-size: 1.04em;
+}
+
+#flaggedTable th, #flaggedTable td {
+  padding: 13px 10px;
+  text-align: left;
+}
+
+#flaggedTable th {
+  background: #181818;
+  color: #ffd700;
+  font-weight: bold;
+  border-bottom: 2px solid #ffd70044;
+}
+
+#flaggedTable tr {
+  transition: background 0.2s;
+}
+
+#flaggedTable tr:hover {
+  background: #ffd70011;
+}
+
+.flagged-status {
+  color: #FF4500;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.btn-yellow {
+  background: #ffd700;
+  color: #181818;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 18px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px #ffd70033;
+}
+.btn-yellow:hover {
+  background: #fff;
+  color: #ffd700;
+  box-shadow: 0 4px 16px #ffd70066;
+}
+
+@media (max-width: 900px) {
+  .admin-main {
+    margin-left: 0;
+    padding: 18px 2vw 18px 2vw;
+  }
+  .sidebar {
+    position: relative;
+    width: 100vw;
+    min-width: unset;
+    height: auto;
+    flex-direction: row;
+    align-items: center;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .flagged-card {
+    padding: 12px 2vw;
+  }
+  #flaggedTable th, #flaggedTable td {
+    padding: 10px 4px;
+    font-size: 0.97em;
+  }
+}
