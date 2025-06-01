@@ -47,4 +47,18 @@ Daily mock scan and alert system
 Triggered on suspicious activities
 Alerts for admin review
 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+## 🖼️ Screenshots
+
+### 🔓 Genral User Page
+![image](https://github.com/user-attachments/assets/a0b695df-f8eb-498d-8bcc-fe87ddb76b4d)
+
+### 👤 User Panel
+![image](https://github.com/user-attachments/assets/21c18499-6e42-4497-bc85-aa5d37bd0e8b)
+
+### 👮 Admin Panel
+
+![image](https://github.com/user-attachments/assets/30ec81eb-7c2b-4f73-b741-adf0091b86b2)
+
+
 
