@@ -10,8 +10,7 @@ WalletX is a secure, full-stack digital wallet system that allows users to manag
 📧 Email Notifications: Alerts for fraud-related events (mocked).
 🧹 Soft Delete: Soft deletion for users and transactions to maintain audit logs.
 
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 🧑‍💻 Panels
 1. 🌐 General Panel
 Welcome screen with key benefits
@@ -30,7 +29,7 @@ View flagged or suspicious activity
 Soft delete users and transactions
 Generate reports and manage system integrity
 
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ⚙️ Features Breakdown :--
 
 ✅ Core Functionalities
