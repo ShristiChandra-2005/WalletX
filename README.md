@@ -37,8 +37,8 @@ Soft delete users and transactions
 Generate reports and manage system integrity
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-⚙️ Features Breakdown :--
 
+⚙️ Features Breakdown :--
 ✅ Core Functionalities
 User Registration & Login (bcrypt + JWT)
 Deposit/Withdraw virtual money
