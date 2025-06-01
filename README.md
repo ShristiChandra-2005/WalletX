@@ -39,6 +39,7 @@ Generate reports and manage system integrity
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 ⚙️ Features Breakdown :--
+
 ✅ Core Functionalities
 User Registration & Login (bcrypt + JWT)
 Deposit/Withdraw virtual money
