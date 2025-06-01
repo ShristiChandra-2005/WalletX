@@ -2,6 +2,8 @@
 
 [WalletX Demo] : https://drive.google.com/file/d/1QoeSPBI-7Q4XIx21mRteuFtosXprQjI5/view?usp=drivesdk
 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 💳 WalletX –Secure Digital Wallet
 WalletX is a secure, full-stack digital wallet system that allows users to manage virtual money through deposits, withdrawals, transfers, and real-time fraud detection features. Built using Node.js, Express.js, MongoDB, and modern security practices, it includes three distinct panels: General (public view), User Panel, and Admin Panel. The application is server-connected and fully functional.
 
@@ -14,7 +16,7 @@ WalletX is a secure, full-stack digital wallet system that allows users to manag
 📧 Email Notifications: Alerts for fraud-related events (mocked).
 🧹 Soft Delete: Soft deletion for users and transactions to maintain audit logs.
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 🧑‍💻 Panels
 1. 🌐 General Panel
 Welcome screen with key benefits
@@ -33,7 +35,7 @@ View flagged or suspicious activity
 Soft delete users and transactions
 Generate reports and manage system integrity
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ⚙️ Features Breakdown :--
 
 ✅ Core Functionalities
@@ -51,7 +53,7 @@ Daily mock scan and alert system
 Triggered on suspicious activities
 Alerts for admin review
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 🖼️ Screenshots
 
 ### 🔓 Genral User Page
